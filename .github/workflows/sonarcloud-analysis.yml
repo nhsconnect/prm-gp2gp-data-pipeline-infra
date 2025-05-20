@@ -14,14 +14,26 @@ permissions:
   
 jobs:
   sonarcloud:
-    name: SonarCloud
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r lambda/requirements.txt || true
+
+      - name: Run SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@v4
+        with:
+          projectBaseDir: lambda
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
