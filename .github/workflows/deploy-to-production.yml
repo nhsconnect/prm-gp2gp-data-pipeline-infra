@@ -2,11 +2,6 @@ name: Deploy to Production
 on:
   workflow_dispatch:
    inputs:
-      environment:
-        description: "Which Environment settings to use"
-        required: true
-        type: string
-        default: "prod"
       is_deployment:
         description: "Is workflow run on deployment"
         type: boolean
@@ -27,7 +22,7 @@ jobs:
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
       is_deployment: ${{ inputs.is_deployment }}
-      environment: ${{ inputs.environment }}
+      environment: prod
       terraform_stack: ${{ matrix.terraform_stack }}
     secrets: inherit
 
@@ -35,7 +30,7 @@ jobs:
     needs: [ infra_terraform_plan_and_apply ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: transfer-classifier
       image_tag: transfer_classifier
@@ -45,7 +40,7 @@ jobs:
     needs: [ transfer-classifier ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: validate-metrics
       build_lambda: true
@@ -55,7 +50,7 @@ jobs:
     needs: [ validate-metrics ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: ods-downloader
       image_tag: ods_downloader
@@ -65,7 +60,7 @@ jobs:
     needs: [ ods-downloader ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: reports-generator
       image_tag: reports_generator
@@ -75,7 +70,7 @@ jobs:
     needs: [ reports-generator ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: spine-exporter
       image_tag: spine_exporter
@@ -85,7 +80,7 @@ jobs:
     needs: [ spine-exporter ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: metrics-calculator
       image_tag: metrics_calculator
@@ -95,7 +90,7 @@ jobs:
     needs: [ metrics-calculator ]
     uses: ./.github/workflows/base-terraform-plan-and-apply.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: email-and-alerting    
       build_lambda: true
@@ -105,7 +100,7 @@ jobs:
     needs: [ email-and-alerting ]
     uses: ./.github/workflows/base-terraform-plan-and-apply.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: gp2gp-dashboard
       image_tag: gp2gp_dashboard
@@ -116,7 +111,7 @@ jobs:
     needs: [ gp2gp-dashboard ]
     uses: ./.github/workflows/base-deploy-to-production.yml
     with:
-      environment: ${{ inputs.environment }}
+      environment: prod
       is_deployment: ${{ inputs.is_deployment }}
       terraform_stack: step-function
     secrets: inherit

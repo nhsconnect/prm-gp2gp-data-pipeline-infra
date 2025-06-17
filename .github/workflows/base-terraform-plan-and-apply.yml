@@ -23,7 +23,6 @@ on:
         description: "Does the workflow need an image tag"
         type: string
 
-
 jobs:
   terraform_plan_and_apply:
     runs-on: ubuntu-latest
