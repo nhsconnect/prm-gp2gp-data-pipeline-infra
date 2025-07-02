@@ -60,8 +60,8 @@ def test_generate_weekly_calls_s3_with_keys(set_env, mock_s3, mock_s3_service, m
     mock_s3_service.get_file_from_S3.assert_has_calls(expected_calls)
 
 
-# def test_weekly_report_generation():
-#     actual = generate_weekly_report("2024-09-16")
-#     with open("./tests/reports/global.csv") as file:
-#         expected = file.read()
-#         assert actual == expected
+def test_weekly_report_generation():
+    actual = generate_weekly_report("2024-09-16")
+    with open("./tests/reports/global.csv") as file:
+        expected = file.read()
+        assert actual == expected
