@@ -150,18 +150,23 @@ def mock_table_with_files(mock_table):
 
 
 @pytest.fixture
-def mock_s3_with_files():
+def mock_s3():
+    with mock_aws():
+        conn = boto3.resource("s3", region_name=REGION_NAME)
+        bucket = conn.create_bucket(Bucket=MOCK_BUCKET)
+        yield bucket
+
+
+@pytest.fixture
+def mock_s3_with_files(mock_s3):
     with mock_aws():
         folder_path = "tests/mocks/mixed_messages"
         json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
 
-        conn = boto3.resource("s3", region_name=REGION_NAME)
-        bucket = conn.create_bucket(Bucket=MOCK_BUCKET)
-
         for file in json_files:
-            bucket.upload_file(os.path.join(folder_path, file), f"2024/01/01/{file}")
+            mock_s3.upload_file(os.path.join(folder_path, file), f"2024/01/01/{file}")
 
-        yield bucket
+    yield mock_s3
 
 
 @pytest.fixture
