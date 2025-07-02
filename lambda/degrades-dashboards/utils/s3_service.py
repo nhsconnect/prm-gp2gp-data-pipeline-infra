@@ -37,3 +37,8 @@ class S3Service:
             self.client.upload_file(Filename=file, Bucket=bucket_name, Key=key)
         except ClientError as e:
             raise e
+
+    def download_file(self, bucket_name, key, file):
+        self.client.download_file(Bucket=bucket_name, Key=key, Filename=file)
+
+        return file

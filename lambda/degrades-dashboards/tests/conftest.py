@@ -176,6 +176,7 @@ def mock_s3_service(mocker):
         mocker.patch.object(service, "list_files_from_S3")
         mocker.patch.object(service, "get_file_from_S3")
         mocker.patch.object(service, "upload_file")
+        mocker.patch.object(service, "download_file")
         yield service
         service._instance = None
 
