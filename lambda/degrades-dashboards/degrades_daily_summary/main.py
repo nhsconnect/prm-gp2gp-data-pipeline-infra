@@ -38,13 +38,13 @@ def lambda_handler(event, context):
 
     base_file_key = query_day.replace("-", "/")
 
-    logger.info(f"Writing summary report to {base_file_key}")
+    logger.info(f"Uploading summary report to {base_file_key} in S3")
 
     s3_service = S3Service()
     s3_service.upload_file(
         file=file_path,
         bucket_name=os.getenv("REGISTRATIONS_MI_EVENT_BUCKET"),
-        key=f"{base_file_key}/degrades_summary.csv",
+        key=f"/{base_file_key}/degrades_summary.csv",
     )
 
 
@@ -56,12 +56,11 @@ def generate_report_from_dynamo_query(
     logger.info(f"Getting degrades totals from: {degrades}")
     degrade_totals = get_degrade_totals_from_degrades(degrades)
 
-    logger.info(degrade_totals)
+    logger.info(f"Degrade summary for {date}: {degrade_totals}")
 
     logger.info(f"Writing degrades report...")
     with open(f"{os.getcwd()}/tmp/{date}.csv", "w") as output_file:
         fieldnames = [key for key in degrade_totals.keys()]
-        logger.info(fieldnames)
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerow(degrade_totals)
