@@ -57,7 +57,7 @@ def generate_weekly_summary(prefixes: list[str], date_beginning) -> dict:
         )
         dfs.append(pd.read_csv(csv_body))
 
-    df = pd.concat(dfs, ignore_index=True)
+    df = pd.concat(dfs, ignore_index=True).sum()
     dict = df.to_dict()
-    dict.update({"WEEK_BEGINNING": date_beginning})
+    dict.update({"WEEK_BEGINNING": date_beginning.replace("-", "/")})
     return dict

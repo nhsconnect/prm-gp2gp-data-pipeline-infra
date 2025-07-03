@@ -1,13 +1,16 @@
 import os
+import csv
 from unittest.mock import call
 
+import pandas as pd
 from moto import mock_aws
 
-from tests.conftest import MOCK_BUCKET
 from utils.generate_weekly_reports import (
     generate_weekly_report,
     get_keys_from_date_range,
+    generate_weekly_summary
 )
+
 
 
 def test_get_keys_from_date_range():
@@ -64,8 +67,47 @@ def test_generate_weekly_calls_s3_with_keys(set_env, mock_s3, mock_s3_service):
     mock_s3_service.read_file_from_S3.get_object_from_s3(expected_calls)
 
 
+def test_generate_weekly_summary_summarises_weekly_data(mock_s3, set_env):
+    files = [
+        "2024-09-16.csv",
+        "2024-09-17.csv",
+        "2024-09-18.csv",
+        "2024-09-19.csv",
+        "2024-09-20.csv",
+        "2024-09-21.csv",
+        "2024-09-22.csv",
+    ]
+    prefixes = [
+        "2024/09/16",
+        "2024/09/17",
+        "2024/09/18",
+        "2024/09/19",
+        "2024/09/20",
+        "2024/09/21",
+        "2024/09/22",
+    ]
+
+    for index, file in enumerate(files):
+        mock_s3.upload_file(
+            f"./tests/reports/{file}", f"/{prefixes[index]}/degrades_summary.csv"
+        )
+
+    actual = generate_weekly_summary(prefixes, "2024-09-16")
+
+    with open("./tests/reports/global.csv", "r") as expected_file:
+        reader = csv.DictReader(expected_file)
+        rows = [row for row in reader]
+
+        for key, value in actual.items():
+            actual[key] = str(value)
+        assert actual == rows[0]
+
+
+
+
+
 @mock_aws
-def test_weekly_report_generation(set_env, mock_s3, mocker):
+def test_weekly_report_generation_adds_new_row_to_global_report(set_env, mock_s3, mocker):
     files = [
         "2024-09-16.csv",
         "2024-09-17.csv",
