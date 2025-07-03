@@ -28,7 +28,7 @@ class S3Service:
 
         return file_keys
 
-    def get_file_from_S3(self, bucket_name, key):
+    def read_file_from_S3(self, bucket_name, key):
         response = self.client.get_object(Bucket=bucket_name, Key=key)
         return response["Body"].read()
 

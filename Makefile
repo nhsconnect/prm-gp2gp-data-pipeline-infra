@@ -46,5 +46,8 @@ zip-degrades-lambdas:
 	cd $(BUILD_PATH)/degrades-api && zip -r -X ../degrades-api-dashboards.zip .
 	cd $(BUILD_PATH)/degrades-api && zip -r -X ../degrades-daily-summary.zip .
 
+format-degrades:
+	cd $(DEGRADES_LAMBDA_PATH) && ./venv/bin/ruff format
+	cd stacks/degrades-dashboards/terraform && terraform fmt -recursive
 
 

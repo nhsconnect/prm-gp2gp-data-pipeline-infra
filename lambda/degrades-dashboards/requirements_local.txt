@@ -4,3 +4,4 @@ terraform-local==0.23.1
 pytest==8.3.5
 pytest-mock==3.14.1
 localstack-client==2.10
+ruff==0.12.1

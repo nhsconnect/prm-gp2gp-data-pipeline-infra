@@ -55,13 +55,13 @@ def test_get_files_from_S3_called_with_list_of_files(
     set_env, mock_valid_event_valid_date, context, mock_s3_service, mock_s3_with_files
 ):
     mock_s3_service.list_files_from_S3.return_value = ["2024/01/01/01-DEGRADES-01.json"]
-    mock_s3_service.get_file_from_S3.return_value = readfile(
+    mock_s3_service.read_file_from_S3.return_value = readfile(
         "tests/mocks/mixed_messages/01-DEGRADES-01.json"
     )
 
     lambda_handler(mock_valid_event_valid_date, context)
 
-    mock_s3_service.get_file_from_S3.assert_called_with(
+    mock_s3_service.read_file_from_S3.assert_called_with(
         bucket_name=MOCK_BUCKET, key="2024/01/01/01-DEGRADES-01.json"
     )
 

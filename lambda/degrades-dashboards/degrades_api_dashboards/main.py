@@ -12,7 +12,7 @@ def calculate_number_of_degrades(date):
         prefix=date, bucket_name=os.getenv("REGISTRATIONS_MI_EVENT_BUCKET")
     )
     for file_name in file_names:
-        file = service.get_file_from_S3(
+        file = service.read_file_from_S3(
             bucket_name=os.getenv("REGISTRATIONS_MI_EVENT_BUCKET"), key=file_name
         )
         if is_degrade(file):
