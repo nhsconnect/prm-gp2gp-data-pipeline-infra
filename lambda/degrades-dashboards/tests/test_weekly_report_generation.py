@@ -2,7 +2,6 @@ import os
 import csv
 from unittest.mock import call
 
-import pandas as pd
 from moto import mock_aws
 
 from utils.generate_weekly_reports import (
