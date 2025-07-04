@@ -51,8 +51,8 @@ deploy-local:  zip-degrades-local
 
 zip-lambda-layer:
 	cd $(DEGRADES_LAMBDA_PATH) && rm -rf ../../$(BUILD_PATH) || true
-	cd $(DEGRADES_LAMBDA_PATH) && mkdir -p ../../$(BUILD_PATH)/layers
-	cd $(DEGRADES_LAMBDA_PATH) && ./venv/bin/pip3 install --platform manylinux2014_x86_64 --only-binary=:all: --implementation cp --python-version 3.12 -r requirements.txt -t ../../$(BUILD_PATH)/layers
+	cd $(DEGRADES_LAMBDA_PATH) && mkdir -p ../../$(BUILD_PATH)/layers/python
+	cd $(DEGRADES_LAMBDA_PATH) && ./venv/bin/pip3 install --platform manylinux2014_x86_64 --only-binary=:all: --implementation cp --python-version 3.12 -r requirements.txt -t ../../$(BUILD_PATH)/layers/python/lib/python3.12/site-packages
 	cd $(BUILD_PATH)/layers && zip -r -X ../degrades-lambda-layer.zip .
 
 zip-degrades-lambdas: zip-lambda-layer
