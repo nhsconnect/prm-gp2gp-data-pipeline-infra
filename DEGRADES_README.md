@@ -28,7 +28,6 @@ This isn't necessary but will require manual input if not present.
 `make deploy-local`
 Deploy degrades infrastructure to local environment using localstack
 
-
 ### Localstack Limitations:
 Lambda layers are not implemented/connected to lambdas on the standard/community tier. 
 They will be however still be created.
