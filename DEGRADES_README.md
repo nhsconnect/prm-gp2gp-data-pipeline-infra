@@ -1,7 +1,8 @@
 # Degrades-Dashboards
 To collect data around the number and different types of degrade events received from GP2GP
 Degrades events received by event-enrichment lambda are sent to an degrades SQS queue which triggers degrades-message-receiver lambda.
-The degrades-message-receiver lambda writes this events to a dynamo table to be later queried.
+The degrades-message-receiver lambda writes these events to a dynamo table to be later queried and summarised into daily reports and upload to S3.
+Daily degrade summary reports are summarised weekly and a new row is written to a weekly summary report, containing both the new weeks data and previous weeks.
 
 
 ## Set-up
@@ -22,20 +23,21 @@ registrations_mi_event_bucket="bucket"
 degrades_message_queue="queue"
 degrades_message_table="table"
 
+This isn't necessary but will require manual input if not present.
+
 `make deploy-local`
 Deploy degrades infrastructure to local environment using localstack
 
-This isn't necessary but will require manual input if not present.
+
 ### Localstack Limitations:
 Lambda layers are not implemented/connected to lambdas on the standard/community tier. 
-They will be created however.
+They will be however still be created.
 IAM Permission relationships are not enforced on the standard/community tier
 
 ## Testing
 
 `make test-degrades`
 Runs python unit tests for degrades work
-
 
 
 `make zip-degrades-lambda`
