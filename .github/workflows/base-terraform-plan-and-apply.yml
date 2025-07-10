@@ -23,7 +23,6 @@ on:
         description: "Does the workflow need an image tag"
         type: string
 
-
 jobs:
   terraform_plan_and_apply:
     runs-on: ubuntu-latest
@@ -117,6 +116,7 @@ jobs:
                 email_report_lambda_zip = "$GITHUB_WORKSPACE/lambda/build/email-report.zip"
                 validate_metrics_lambda_zip = "$GITHUB_WORKSPACE/lambda/build/validate-metrics.zip"
                 degrades_message_receiver_lambda_zip = "./lambda/build/degrades-message-receiver.zip"
+                store_asid_lookup_lambda_zip = "$GITHUB_WORKSPACE/lambda/build/store-asid-lookup.zip"
                 degrades_daily_summary_lambda_zip = "./lambda/build/degrades-daily-summary.zip"
                 degrades_message_table = "${{ secrets.AWS_DEGRADES_MESSAGE_TABLE }}"
                 registrations_mi_event_bucket = "${{ secrets.AWS_REGISTRATION_MI_EVENT_BUCKET }}"
